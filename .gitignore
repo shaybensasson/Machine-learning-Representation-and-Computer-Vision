@@ -1,3 +1,23 @@
+.dropbox
+.idea/
+Lectures/
+.ipynb_checkpoints/
+*.gz
+101_ObjectCategories/
+AngliaSVM/
+Cache/
+Results/
+svm_v0.56/
+vlfeat-0.9.20/
+
+*.docx
+*.pptx
+*.zip
+
+# Matlab
+*.mat
+*.asv
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
