@@ -14,9 +14,9 @@ cats = cats(Params.ClassIndices);
 % O(n_total) - we go over the cats subdirs twice
 % first time for prealloc
 % second time for image extraction
-n_files = length(cats);
+n_cats = length(cats);
 n_total = 0;
-for i_cat=1:length(n_files) %O(n_total)
+for i_cat=1:length(n_cats) %O(n_total)
     cat = cats{i_cat};
     fis = GetFiles(cat);
     n_total = n_total+length(fis);
@@ -26,13 +26,13 @@ N = 0;
 Data = zeros(Params.S, Params.S, n_total);
 Labels = nan(1, n_total);
 
-for i_cat=1:n_files 
+for i_cat=1:n_cats 
     cat = cats{i_cat};
     fis = GetFiles(cat);
     fprintf('Reading [#%d]%s %d files ...\n', i_cat, cat, length(fis));
     
     for j=1:length(fis)
-        filename = fullfile(fis(j).folder, fis(j).name);
+        filename = fullfile(Params.ROOT_DIR, cat, fis(j).name);
         [img] = imread(filename);
         if (length(size(img)) == 3)
             img = rgb2gray(img);
