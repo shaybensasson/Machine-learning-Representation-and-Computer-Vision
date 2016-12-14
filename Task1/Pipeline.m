@@ -8,27 +8,32 @@ addpath('vlfeat-0.9.20/toolbox');
 vl_setup();
 %%
 ClassIndices = 1:10;
+%ClassIndices = 11:20;
 
 Params = GetDefaultParameters();
-Params.Data.ClassIndices = ClassIndices;
 
 rng(Params.Rseed);     % Seed the random number generator
+vl_twister('STATE', Params.Rseed); %Seed the random number generator of KMEANS, EXTEREMLY IMPORTANT!
 
 %ClassIndices = GetRandomCatsPermutation(Params);
+Params.Data.ClassIndices = ClassIndices;
 Params.Experiment = 'Exp_00';
 
 CacheParams = Params.Cache;
     
 %% Cross experiment pipeline
+tTotal = tic;
+
 if (IsGetDataCacheValid(Params.Data, CacheParams))
     fprintf('Loading Cache for GetData ...\n');
-    load(CacheParams.CacheForGetData, 'Data', 'Labels');
+    load(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata');
 else
-    [ Data, Labels ] = GetData(Params.Data); 
-    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Params');
+    [ Data, Labels, Metadata ] = GetData(Params.Data); 
+    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata', 'Params');
 end
 
-[ TrainData, TestData , TrainLabels, TestLabels ] = TrainTestSplit(Data, Labels, Params.Split);
+[ TrainData, TestData , TrainLabels, TestLabels, ~, TestIndices] = ...
+    TrainTestSplit(Data, Labels, Params.Split);
 
 %%
 if CacheParams.UseCacheForTrainPrepare && ...
@@ -59,10 +64,16 @@ else
     save(CacheParams.CacheForTestPrepare, 'TestDataRep');
 end
 
+%TODO: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED
+%THIS IS DUE TO RANDOMNESS IN Kmeans PREDICT/fwd cpp code
 Results = Test(Model, TestDataRep);
 
 Summary = Evaluate(Results, TestLabels, Params.Summary);
-ReportResults(Summary, Params);
+
+fprintf('The experiment took %.2f seconds.\n', toc(tTotal));
+
+%% 
+ReportResults(Summary, TestLabels, TestIndices, Metadata, Params);
 
 
 

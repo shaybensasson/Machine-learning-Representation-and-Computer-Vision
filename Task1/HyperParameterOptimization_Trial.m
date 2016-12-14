@@ -1,4 +1,5 @@
-function [ErrorRate] = HyperParameterOptimization_Trial(TTS, Params, K,C, ...
+function [ErrorRate] = HyperParameterOptimization_Trial(TTS, Params, Metadata, ...
+    K,C, ...
     Kernel, Exp_Id, Kernel_Type, Kernel_Name)
 
 tic;
@@ -6,8 +7,6 @@ Params.Experiment = sprintf('Exp_%d_%d', Params.Data.S, Exp_Id);
 %FUTURE: We might make naming wiser
 
 fprintf('-> Running experiment "%s" ...\n', Params.Experiment);
-
-CacheParams = Params.Cache;
 
 Params.Train.Kmeans.K = K;
 Params.Train.SVM.C = C;
@@ -20,40 +19,17 @@ TestData = TTS.ValData;
 TestLabels = TTS.ValLabels;
 
 %%
-if CacheParams.UseCacheForTrainPrepare && ...
-        exist(CacheParams.CacheForTrainPrepare, 'file')
-    fprintf('Loading Cache for TrainPrepare ...\n');
-    load(CacheParams.CacheForTrainPrepare);
-else
-    [TrainDataRep] = Prepare(TrainData, Params.Prepare);
-    save(CacheParams.CacheForTrainPrepare, 'TrainDataRep');
-end
+[TrainDataRep] = Prepare(TrainData, Params.Prepare);
 
-if CacheParams.UseCacheForTrain && ...
-        exist(CacheParams.CacheForTrain, 'file')
-    fprintf('Loading Cache for Train ...\n');
-    load(CacheParams.CacheForTrain);
-else
-    Model = Train(TrainDataRep, TrainLabels, Params.Train);
-    if CacheParams.UseCacheForTrain
-        save(CacheParams.CacheForTrain, 'Model');
-    end
-end
+Model = Train(TrainDataRep, TrainLabels, Params.Train);
 
 %%
-if CacheParams.UseCacheForTestPrepare && ...
-        exist(CacheParams.CacheForTestPrepare, 'file')
-    fprintf('Loading Cache for TestPrepare ...\n');
-    load(CacheParams.CacheForTestPrepare);
-else
-    [TestDataRep] = Prepare(TestData, Params.Prepare);
-    save(CacheParams.CacheForTestPrepare, 'TestDataRep');
-end
+[TestDataRep] = Prepare(TestData, Params.Prepare);
 
 Results = Test(Model, TestDataRep);
 
 Summary = Evaluate(Results, TestLabels, Params.Summary);
-ReportResults(Summary, Params);
+ReportResults(Summary, TestLabels, [], Metadata, Params);
 
 ErrorRate = Summary.ErrorRate;
 

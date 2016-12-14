@@ -5,7 +5,7 @@ function [Results] = Test(Model, Data)
     [N_IMAGES, N_SIFTS, SIFT_DIM] = size(Data);    
     AllFeatures = reshape(Data, N_IMAGES*N_SIFTS, SIFT_DIM);
     
-    fprintf('Assigning centroids to SIFT vectors ...\n');
+    fprintf('Assigning representatives to test SIFT extracted vectors ...\n');
     DistFromCentroids = vl_alldist(double(AllFeatures'), Model.Representatives); %dimsXsamples
     [~, AllAssignments] = min(DistFromCentroids'); %#ok<UDIM> %get closest centroid
     

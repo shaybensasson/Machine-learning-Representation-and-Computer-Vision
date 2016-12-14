@@ -14,5 +14,9 @@ Summary.ConfusionMatrix = ConfusionMatrix;
 
 errors = (ConfusionMatrix-diag(diag(ConfusionMatrix)));
 Summary.ErrorRate = sum(errors(:)) / length(Y);
+
+%used later in eval
+Summary.Results = Results;
+Summary.TestLabels = Labels;
 end
 

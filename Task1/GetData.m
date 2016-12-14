@@ -1,10 +1,13 @@
-function [Data, Labels] = GetData(Params)
+function [Data, Labels, Metadata] = GetData(Params)
 %GETDATA Loads the data and subsets it if required
 % Loads the data and subsets it if required
 % returns only images from classes Params.ClassIndices
+
+%Metadata will be used later for reports
     
-cats = GetAllCategories(Params.ROOT_DIR);
-cats = cats(Params.ClassIndices);
+Categories = GetAllCategories(Params.ROOT_DIR);
+Categories = Categories(Params.ClassIndices);
+Metadata.Categories = Categories;
 
 %cats = {dirs(idxs).name};
 %showHist(ROOT_DIR, cats_train, 'cats_train')
@@ -14,25 +17,34 @@ cats = cats(Params.ClassIndices);
 % O(n_total) - we go over the cats subdirs twice
 % first time for prealloc
 % second time for image extraction
-n_cats = length(cats);
+n_cats = length(Categories);
 n_total = 0;
-for i_cat=1:length(n_cats) %O(n_total)
-    cat = cats{i_cat};
-    fis = GetFiles(cat);
-    n_total = n_total+length(fis);
+
+%% estimate number of files
+for classIndex=1:n_cats %O(n_total)
+    cat = Categories{classIndex};
+    files = GetFiles(cat);
+    n_total = n_total+length(files);
 end
 
-N = 0;
+%% pre-allocate
+TrialNum = 0;
 Data = zeros(Params.S, Params.S, n_total);
 Labels = nan(1, n_total);
+Metadata.Filenames = cell(1, n_total);
 
-for i_cat=1:n_cats 
-    cat = cats{i_cat};
-    fis = GetFiles(cat);
-    fprintf('Reading [#%d]%s %d files ...\n', i_cat, cat, length(fis));
+for i=1:n_cats 
+    classIndex = Params.ClassIndices(i);
+    cat = Categories{i};
     
-    for j=1:length(fis)
-        filename = fullfile(Params.ROOT_DIR, cat, fis(j).name);
+    files = GetFiles(cat);
+    
+    n = length(files);
+    
+    fprintf('Reading [#%d]%s %d files ...\n', classIndex, cat, n);
+    
+    for i_file=1:n
+        filename = fullfile(Params.ROOT_DIR, cat, files(i_file).name);
         [img] = imread(filename);
         if (length(size(img)) == 3)
             img = rgb2gray(img);
@@ -43,9 +55,13 @@ for i_cat=1:n_cats
         resized = imresize(img, [Params.S Params.S]);
         %imshow(resized);
         
-        N = N+1;
-        Data(:,:,N) = resized;
-        Labels(N) = i_cat;
+        TrialNum = TrialNum+1;
+        Data(:,:,TrialNum) = resized;
+        
+        %Note that our labels are 1:M, later we'll convert them to class indices
+        Labels(TrialNum) = i;
+        
+        Metadata.Filenames{TrialNum} = filename;
     end
 end
   

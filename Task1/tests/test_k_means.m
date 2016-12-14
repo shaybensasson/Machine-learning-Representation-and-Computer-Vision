@@ -1,4 +1,15 @@
 close all; clear; clc;
+
+addpath('../vlfeat-0.9.20/toolbox');
+vl_setup();
+
+%%
+rng(2016);
+vl_twister('STATE', 2016); %Seed the random number generator of KMEANS, EXTEREMLY IMPORTANT!
+
+%rand('state',17) ;
+%randn('state',17);
+
 numData = 5000 ;
 dimension = 2 ;
 A = rand(dimension,numData) ;

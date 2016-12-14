@@ -1,20 +1,24 @@
-function [Data1, Data2, Labels1, Labels2, Data1Indices, Data2Indices] = ...
-    TrainTestSplit(Data, Labels, Params)
-%TrainTestSplit Randomly Splits the data and labels according to a ratio defined in Params
-%We ensure that the data is splitted by labels, so Ratio will remain whithin label
 
-%{
-    n = size(Data, 3);
-    perm = randperm(n); %choose random permutation
-    
-    Data1Indices = perm(1:ceil(n*(1-Params.Ratio)));
-    Data1 = Data(:,:,Data1Indices);
-    Labels1 = Labels(Data1Indices);
-    
-    Data2Indices = perm(length(Data1Indices)+1:end);
-    Data2 = Data(:,:,Data2Indices);
-    Labels2 = Labels(Data2Indices);
-%}
+TOTAL_ROWS = 30;
+Data = nan(100,100,20);
+for i=1:TOTAL_ROWS
+    Data(:,:,i) = ones(100,100)*i;
+end
+Labels = (mod(1:TOTAL_ROWS,3));
+Params.Ratio = 0.5;
+
+
+n = size(Data, 3);
+perm = randperm(n); %choose random permutation
+
+Data1Indices = perm(1:ceil(n*Params.Ratio));
+Data1_ = Data(:,:,Data1Indices);
+Labels1_ = Labels(Data1Indices);
+
+Data2Indices = perm(length(Data1Indices)+1:end);
+Data2_ = Data(:,:,Data2Indices);
+Labels2_ = Labels(Data2Indices);
+
 
 %Store original order
 Indices = 1:length(Labels);
@@ -48,6 +52,5 @@ Labels2 = Labels(AssingVec == 2);
 
 Data1Indices = Indices(AssingVec == 1);
 Data2Indices = Indices(AssingVec == 2);
-end
 
 

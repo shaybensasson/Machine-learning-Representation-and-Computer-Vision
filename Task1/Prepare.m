@@ -32,6 +32,8 @@ for idxImage=1:N_IMAGES
             'fast');
         
         idxs = randperm(size(desc, 2), n_features);
+        
+        %idxs = 1:n_features;
         features = desc(:,idxs);
                         
         sub = ((idxScale-1)*n_features)+1:((idxScale)*n_features);

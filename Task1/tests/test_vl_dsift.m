@@ -27,7 +27,9 @@ image(img)
 scale = 8;
 stride = 1;
 
-[fOLD,dOLD] = vl_sift(img, 'verbose') ;
+%[fOLD,dOLD] = vl_sift(img, 'verbose') ;
+vl_twister('STATE', 2016); %Seed the random number generator of KMEANS, EXTEREMLY IMPORTANT!
+
 [f, d] = vl_dsift(img, ...
     'size', scale, ...
     'step', stride, ...
@@ -36,6 +38,8 @@ stride = 1;
     'fast', ...
     'verbose');
             
+%sel = randperm(size(f,2), 10);
+rng(2016);
 sel = randperm(size(f,2), 10);
 h1 = vl_plotframe(f(:,sel)) ;
 h2 = vl_plotframe(f(:,sel)) ;

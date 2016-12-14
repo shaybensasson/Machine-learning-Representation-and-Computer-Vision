@@ -8,38 +8,47 @@ addpath('vlfeat-0.9.20/toolbox');
 vl_setup();
 
 %% Prepare Cross experiment Parameters
-tic;
+tTotal = tic;
 
 ClassIndices = 1:10;
 
 Params = GetDefaultParameters();
 Params.Data.ClassIndices = ClassIndices;
 
-%Do not use caching here
-Params.Cache.UseCacheForTrain = false;
+Params.IsHyperParamOptimization = true;
+%CACHING Is NOT USED INSIDE HyperParameterOptimization_Trial
+%Params.Cache.UseCacheForTrain = false;
+%Params.Cache.UseCacheForTrainPrepare = false;
+%Params.Cache.UseCacheForTestPrepare = false;
 
 rng(Params.Rseed);     % Seed the random number generator
 
 %ClassIndices = GetRandomCatsPermutation(Params);
 
 CacheParams = Params.Cache;
+PurgeCache(Params.Cache); %Purging cache when optimaizng
 
 if (IsGetDataCacheValid(Params.Data, CacheParams))
     fprintf('Loading Cache for GetData ...\n');
-    load(CacheParams.CacheForGetData, 'Data', 'Labels');
+    load(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata');
 else
-    [ Data, Labels ] = GetData(Params.Data);
-    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Params');
+    [ Data, Labels, Metadata ] = GetData(Params.Data); 
+    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata', 'Params');
 end
 
+
 TTS = struct();
-[ TTS.TrainData, TTS.ValData, TTS.TrainLabels, TTS.ValLabels] = ...
+
+[ TrainData, ~, TrainLabels, ~] = ...
     TrainTestSplit( Data, Labels, Params.Split);
 
+%IMPORTANT: Validation set is sub set of the train
+[ TTS.TrainData, TTS.ValData, TTS.TrainLabels, TTS.ValLabels] = ...
+    TrainTestSplit( TrainData, TrainLabels, Params.Split);
+
 %% Gridseach hyper parameter space
-%TODO: REMEMBER TO CLEAR CACHE WHEN CHANGING S!!!
 %S = [100, 200]; %the image size
-Params.Data.S = 200;
+Params.Data.S = 100;
 %we do not optimize S in here, because data loading must be before TTS,
 % and TTS runs before any experiment runs
 
@@ -47,9 +56,9 @@ K = [100, 200, 300, 500, 700, 900]; %K representatives for Kmeans
 C = [0.1, 1, 5, 10]; %SVM tradeoff param
 
 %Test
-%K = [200, 300];
+%K = [100];
 %C = [1]; %SVM tradeoff param
-%Kernel = 1:1;
+%Kernel = [2];
 
 Kernel_Type = {linear, polynomial(2), polynomial(3), rbf(0.5), rbf(2)};
 Kernel_Name = {'lin', 'poly(2)', 'poly(3)', 'rbf(0.5)', 'rbf(2)'};
@@ -61,7 +70,8 @@ Kernel = 1:length(Kernel_Type);
 Exp_Id = reshape(1:numel(K_), size(K_));
 fitresult = arrayfun(@(k,c,kernel,exp_id)  ...
     HyperParameterOptimization_Trial( ...
-        TTS,Params, k,c,kernel,exp_id, Kernel_Type, Kernel_Name), ...
+        TTS,Params, Metadata, ...
+        k,c,kernel,exp_id, Kernel_Type, Kernel_Name), ...
     K_,C_,Kernel_, Exp_Id); 
 
 [~, minidx] = min(fitresult(:));
@@ -107,4 +117,4 @@ for i=TrialNum'
     end
 end
 
-fprintf('-> HyperParam Optim completed. Duration: %f.\n', toc);
+fprintf('-> HyperParam Optim completed. Duration: %f.\n', toc(tTotal));
