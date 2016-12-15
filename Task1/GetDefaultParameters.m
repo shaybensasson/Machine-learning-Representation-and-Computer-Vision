@@ -6,7 +6,7 @@ function [Params] = GetDefaultParameters()
     rng(Params.Rseed);
     
     Params.Data.ROOT_DIR = './101_ObjectCategories/';
-    Params.Data.S = 100; %Dimension of images after preproc
+    Params.Data.S = 100; %200; Dimension of images after preproc
     
     Params.Cache.CachePath = './Cache';
     Params.Cache.UseCacheForGetData = true;

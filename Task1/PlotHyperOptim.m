@@ -46,8 +46,8 @@ h = text(minidx+(N_TRIALS*0.01), fitresult(minidx)*0.8, txt);
 h.Color = 'red';
 h.FontSize = 12;
 
-interesting_points = [19, 49]; %100
-%interesting_points = [7, 25]; %200
+%interesting_points = [1, 62]; %100
+interesting_points = [1, 61]; %200
 for i=1:length(interesting_points)
     idx = interesting_points(i);
     

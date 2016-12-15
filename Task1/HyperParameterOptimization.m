@@ -48,7 +48,7 @@ TTS = struct();
 
 %% Gridseach hyper parameter space
 %S = [100, 200]; %the image size
-Params.Data.S = 100;
+Params.Data.S = 200;
 %we do not optimize S in here, because data loading must be before TTS,
 % and TTS runs before any experiment runs
 
