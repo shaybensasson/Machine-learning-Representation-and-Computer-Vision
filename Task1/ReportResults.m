@@ -27,7 +27,7 @@ fprintf('fscore: %f\n', macro.fscore)
 fprintf('Persisting Experiment Results ...\n');
 
 if exist(Params.Report.ROOT_DIR) == 0 % create folder if doesnt exist
-   mkdir(Params.Report.ROOT_DIR) 
+    mkdir(Params.Report.ROOT_DIR)
 end
 
 file_path = fullfile(Params.Report.ROOT_DIR, sprintf('ResultsOf%s.mat', Params.Experiment));
@@ -40,6 +40,5 @@ if (~Params.IsHyperParamOptimization)
     PlotMostErrornousTests(Summary.Results, TestLabels, TestIndices, ...
         Metadata, Params.Data.ClassIndices)
 end
-
 end
 

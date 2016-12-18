@@ -3,8 +3,8 @@ function [ MClassSVM ] = MClassSVM_Train( Features, Classes, Params )
 %   That is: for classifier i, the examples of class i get the label +1, and the rest of the classes get -1 label.
 %	The function returns an MClassSVM structure containing all the M SVM models as fields 
     C = Params.SVM.C;
-    Kernel = Params.SVM.Kernel;
-    Tutor = Params.SVM.Tutor;
+    kernel = Params.SVM.kernel;
+    tutor = Params.SVM.tutor;
     
     M = length(unique(Classes));
     MClassSVM.Classifiers = cell(M,1);
@@ -16,7 +16,7 @@ function [ MClassSVM ] = MClassSVM_Train( Features, Classes, Params )
         %figure;
         %histogram(BinaryClasses);
         %title(sprintf('%d', idxClass));
-        MClassSVM.Classifiers{idxClass} = train(svc, Tutor, Features, BinaryClasses, C, Kernel);
+        MClassSVM.Classifiers{idxClass} = train(svc, tutor, Features, BinaryClasses, C, kernel);
     end
     
     fprintf('\n');

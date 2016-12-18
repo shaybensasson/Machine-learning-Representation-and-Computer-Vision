@@ -1,46 +1,34 @@
 function [Model] = Train(Data, Labels, Params)
 %TRAIN Trains the classifier
-if isfield(Params, 'HOG')
-    Params = Params.HOG
+if Params.Model == 'HOG'
     %Turn data to numeric vectors
     X = Data;
     Y = Labels';
-
-    SizeSampleVec = size(X,1); 
-    tutor = Params.tutor;
-    KernelType = Params.KernelType;
-    switch KernelType
-        case 1
-            kernel=linear;
-        case 2
-            kernel=polynomial(2);
-        case 3
-            kernel=polynomial(3);
-        case 4
-            kernel=rbf(0.5);
-        case 5
-            kernel=rbf(2);
-    end
-
+    
+    SizeSampleVec = size(X,1);
+    tutor = Params.SVM.tutor;
+    kernel = Params.SVM.kernel;
+    C = Params.SVM.C;
+    
     fprintf(1,'training support vector machine on the HOG...\n');
     NumCatag = length(unique(Y));
     Model.Classifiers = cell(NumCatag,1);
-
+    
     for IndCatag=1:NumCatag
         %train binary classifier in one-versus-all method
         BinaryClasses = double(2*(Y==IndCatag)-1); %0,1 to -1,1 column vector
-
+        
         %figure;
         %histogram(BinaryClasses);
         %title(sprintf('%d', idxClass));
-        Model.Classifiers{IndCatag} = train(svc, tutor, X, BinaryClasses, Params.C, kernel);
+        Model.Classifiers{IndCatag} = train(svc, tutor, X, BinaryClasses, C, kernel);
         fprintf('%d/%d ', IndCatag, NumCatag);
-
+        
     end
-        fprintf('\n');
+    fprintf('\n');
 else
-%   Detailed explanation goes here
-
+    %   TODO: Detailed explanation goes here
+    
     K = Params.Kmeans.K;
     Model.K = K;
     
@@ -56,7 +44,7 @@ else
     %save('Cache/Kmeans.mat', 'Centers', 'AllAssignments', 'Cost')
     
     Model.Representatives = Centers;
-        
+    
     AllAssignments = reshape(AllAssignments, N_IMAGES, N_SIFTS);
     
     fprintf('Creating BoW Histogram for each train image ...\n');
