@@ -1,13 +1,18 @@
 clc; clear; close all;
 %% includes
 addpath('Helpers');
-%addpath('svm_v0.56');
-addpath('AngliaSVM');
+%---addpath('svm_v0.56');
+%addpath('AngliaSVM');
+%addpath('vlfeat-0.9.20/toolbox');
+%vl_setup();
 
-addpath('vlfeat-0.9.20/toolbox');
-vl_setup();
+fprintf(1,'Loading HOG  tool...\n');
+run('C:\Users\Gidon\Google Drive\matlab\CaltechProj\vlfeat2-19\vlfeat\toolbox\vl_setup')
+fprintf(1,'Loading SVM tool...\n');
+run('C:\Users\Gidon\Google Drive\matlab\CaltechProj\AngliaSVM\compilemex')
+addpath('C:\Users\Gidon\Google Drive\matlab\CaltechProj\AngliaSVM\')
+
 %%
-%jkjk
 ClassIndices = 1:10;
 %ClassIndices = 11:20;
 
@@ -67,7 +72,7 @@ end
 
 %TODO: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED
 %THIS IS DUE TO RANDOMNESS IN Kmeans PREDICT/fwd cpp code
-Results = Test(Model, TestDataRep);
+Results = Test(Model, TestDataRep, Params.Test); % Gidon 18-12 - i added another parametr to the function: [Params]
 
 Summary = Evaluate(Results, TestLabels, Params.Summary);
 

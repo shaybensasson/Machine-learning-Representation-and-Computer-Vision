@@ -1,6 +1,34 @@
-function [Results] = Test(Model, Data)
+function [Results] = Test(Model, Data, Params)
 %Test Tests the classified model
 %   Detailed explanation goes here
+if Params.model == 'HOG'
+    % loop over all exampals
+    fprintf(1,'Testing model...\n');
+
+    N = size(Data, 1);
+    M = length(Model.Classifiers);
+    ClassScoreMatrix = zeros(N, M);
+    for idxClass=1:M
+        %predict using binary classifiers
+        fprintf('%d/%d ', idxClass, M);
+
+        cls = Model.Classifiers{idxClass};
+        ClassScoreMatrix(:, idxClass) = fwd(cls, TestDataRep); %NxD
+
+        %figure;
+        %histogram(ClassScoreMatrix(:, idxClass));
+        %title(sprintf('%d', idxClass));
+
+    end
+
+    fprintf('\n');
+
+    %ArgMax on columns
+    [~,Predicted] = max(ClassScoreMatrix'); %#ok<UDIM>
+
+    Results.Predicted = RePredictedsults';
+    Results.ClassScoreMatrix = ClassScoreMatrix,
+else
     K = Model.K;
     [N_IMAGES, N_SIFTS, SIFT_DIM] = size(Data);    
     AllFeatures = reshape(Data, N_IMAGES*N_SIFTS, SIFT_DIM);
@@ -22,5 +50,7 @@ function [Results] = Test(Model, Data)
     
     fprintf('Predicting using SVC ...\n');
     [ Results.Predicted, Results.ClassScoreMatrix ] = MClassSVM_Predict(Features, Model.MClassSVM);
+    
+end
 end
 

@@ -67,6 +67,8 @@ end
   
     function [fis] = GetFiles(d)
         fis = dir(fullfile(Params.ROOT_DIR, d));
-        fis = fis(~[fis.isdir]);
+        
+        fis = fis(~[fis.isdir]);        
+        
     end
 end
