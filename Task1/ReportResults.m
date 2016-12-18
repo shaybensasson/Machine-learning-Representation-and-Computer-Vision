@@ -26,7 +26,7 @@ fprintf('fscore: %f\n', macro.fscore)
 
 fprintf('Persisting Experiment Results ...\n');
 
-if exist(Params.Report.ROOT_DIR) == 0 % create folder if doesnt exist
+if exist(Params.Report.ROOT_DIR, 'dir') == 0 % create folder if doesnt exist
     mkdir(Params.Report.ROOT_DIR)
 end
 

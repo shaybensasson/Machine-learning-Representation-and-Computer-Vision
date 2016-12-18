@@ -5,12 +5,11 @@ if Params.Model == 'HOG'
     X = Data;
     Y = Labels';
     
-    SizeSampleVec = size(X,1);
     tutor = Params.SVM.tutor;
     kernel = Params.SVM.kernel;
     C = Params.SVM.C;
     
-    fprintf(1,'training support vector machine on the HOG...\n');
+    fprintf('training support vector machine on the HOG...\n');
     NumCatag = length(unique(Y));
     Model.Classifiers = cell(NumCatag,1);
     

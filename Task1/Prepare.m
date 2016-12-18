@@ -8,10 +8,13 @@ if Params.IsHOG
     % loop over all exampals
     fprintf('Preprocessing data (covert to HOG, Vectorize)...\n');
     
+    %TODO: TALK TO GIDON THIS SHOULD BE IMPLEMENTED CLEARER
     for IndImg = 1:size(Data,3)
         
         % turn into HOG represntation
-        TempHog = vl_hog(single(squeeze(Data(:,:,IndImg))), Params.CellSize, 'numOrientations', Params.numOrientations) ;
+        TempHog = vl_hog(single(...
+                squeeze(Data(:,:,IndImg))), ...
+            Params.CellSize, 'numOrientations', Params.numOrientations);
         
         %size(TempHog)
         

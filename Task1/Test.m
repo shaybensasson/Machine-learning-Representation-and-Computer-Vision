@@ -27,7 +27,7 @@ if Params.Model == 'HOG'
     [~,Predicted] = max(ClassScoreMatrix'); %#ok<UDIM>
     
     Results.Predicted = Predicted';
-    Results.ClassScoreMatrix = ClassScoreMatrix,
+    Results.ClassScoreMatrix = ClassScoreMatrix;
 else
     K = Model.K;
     [N_IMAGES, N_SIFTS, SIFT_DIM] = size(Data);
