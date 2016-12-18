@@ -7,6 +7,7 @@ addpath('AngliaSVM');
 addpath('vlfeat-0.9.20/toolbox');
 vl_setup();
 %%
+%jkjk
 ClassIndices = 1:10;
 %ClassIndices = 11:20;
 
