@@ -26,7 +26,7 @@ Model = Train(TrainDataRep, TrainLabels, Params.Train);
 %%
 [TestDataRep] = Prepare(TestData, Params.Prepare);
 
-Results = Test(Model, TestDataRep);
+Results = Test(Model, TestDataRep , Params.Test);
 
 Summary = Evaluate(Results, TestLabels, Params.Summary);
 ReportResults(Summary, TestLabels, [], Metadata, Params);
