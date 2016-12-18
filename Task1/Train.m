@@ -28,15 +28,16 @@ if isfield(Params, 'HOG')
 
     for IndCatag=1:NumCatag
         %train binary classifier in one-versus-all method
-        fprintf('%d/%d ', IndCatag, NumCatag);
         BinaryClasses = double(2*(Y==IndCatag)-1); %0,1 to -1,1 column vector
 
         %figure;
         %histogram(BinaryClasses);
         %title(sprintf('%d', idxClass));
         Model.Classifiers{IndCatag} = train(svc, tutor, X, BinaryClasses, Params.C, kernel);
-    end    
-    
+        fprintf('%d/%d ', IndCatag, NumCatag);
+
+    end
+        fprintf('\n');
 else
 %   Detailed explanation goes here
 

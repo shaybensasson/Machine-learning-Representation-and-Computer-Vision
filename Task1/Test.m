@@ -10,14 +10,14 @@ if Params.model == 'HOG'
     ClassScoreMatrix = zeros(N, M);
     for idxClass=1:M
         %predict using binary classifiers
-        fprintf('%d/%d ', idxClass, M);
 
         cls = Model.Classifiers{idxClass};
-        ClassScoreMatrix(:, idxClass) = fwd(cls, TestDataRep); %NxD
+        ClassScoreMatrix(:, idxClass) = fwd(cls, Data); %NxD
 
         %figure;
         %histogram(ClassScoreMatrix(:, idxClass));
         %title(sprintf('%d', idxClass));
+        fprintf('%d/%d ', idxClass, M);
 
     end
 
@@ -26,7 +26,7 @@ if Params.model == 'HOG'
     %ArgMax on columns
     [~,Predicted] = max(ClassScoreMatrix'); %#ok<UDIM>
 
-    Results.Predicted = RePredictedsults';
+    Results.Predicted = Predicted';
     Results.ClassScoreMatrix = ClassScoreMatrix,
 else
     K = Model.K;
