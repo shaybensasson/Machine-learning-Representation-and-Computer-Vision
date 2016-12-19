@@ -1,7 +1,11 @@
 function [DataRep] = Prepare(Data, Params)
-%PREPARE Compute the representation function
+%PREPARE Computes the representation function resulting feature space vectors
 %   Transform the example image into the input form of the classifier
-%TODO: more
+%   HOG:
+%       TODO: GIDON
+%   SIFT:
+%     Extracting SIFTS of different scales for each image
+
 if Params.IsHOG
     Params = Params.HOG;
     
@@ -17,6 +21,7 @@ if Params.IsHOG
         %size(TempHog)
         
         % Vectorize
+        %TODO: Gidon could you pre=allocate RepTemp?
         RepTemp(IndImg).Img = TempHog(:);
     end
     DataRep = struct2cell(RepTemp);

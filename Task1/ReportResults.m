@@ -17,12 +17,13 @@ if (~Params.IsHyperParamOptimization)
     PlotConfusionMatrix(Summary.ConfusionMatrix, Metadata.Categories);
 end
 
+%{
 confmat = Summary.ConfusionMatrix;
 [micro, macro] = MicroMacroPR(confmat); %#ok
 fprintf('precision: %f\n', macro.precision)
 fprintf('recall: %f\n', macro.recall)
 fprintf('fscore: %f\n', macro.fscore)
-
+%}
 
 fprintf('Persisting Experiment Results ...\n');
 

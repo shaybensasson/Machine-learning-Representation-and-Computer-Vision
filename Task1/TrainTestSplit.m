@@ -3,19 +3,6 @@ function [Data1, Data2, Labels1, Labels2, Data1Indices, Data2Indices] = ...
 %TrainTestSplit Randomly Splits the data and labels according to a ratio defined in Params
 %We ensure that the data is splitted by labels, so Ratio will remain whithin label
 
-%{
-    n = size(Data, 3);
-    perm = randperm(n); %choose random permutation
-    
-    Data1Indices = perm(1:ceil(n*(1-Params.Ratio)));
-    Data1 = Data(:,:,Data1Indices);
-    Labels1 = Labels(Data1Indices);
-    
-    Data2Indices = perm(length(Data1Indices)+1:end);
-    Data2 = Data(:,:,Data2Indices);
-    Labels2 = Labels(Data2Indices);
-%}
-
 %Store original order
 Indices = 1:length(Labels);
 

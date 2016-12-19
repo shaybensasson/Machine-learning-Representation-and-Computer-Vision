@@ -5,11 +5,11 @@ addpath('Helpers');
 addpath('AngliaSVM');
 
 addpath('vlfeat-0.9.20/toolbox');
-vl_setup();
-%%
+vl_setup(); %essential for vlfeat toolbox
 
-ClassIndices = 1:10;
-%ClassIndices = 11:20;
+%% Choose classes to learn from/test on
+%ClassIndices = 1:10;
+ClassIndices = 11:20;
 
 Params = GetDefaultParameters();
 
@@ -17,16 +17,19 @@ rng(Params.Rseed);     % Seed the random number generator
 vl_twister('STATE', Params.Rseed); %Seed the random number generator of KMEANS, EXTEREMLY IMPORTANT!
 
 %ClassIndices = GetRandomCatsPermutation(Params);
+%Can be used to test arbitrary set of classes
+
 Params.Data.ClassIndices = ClassIndices;
 Params.Experiment = 'Exp_00';
 
 CacheParams = Params.Cache;
 
+%create cache dir if missing
 if (~exist(CacheParams.CachePath, 'dir'))
     mkdir(CacheParams.CachePath);
 end
     
-%% Cross experiment pipeline
+%% Get data and split it
 tTotal = tic;
 
 if (IsGetDataCacheValid(Params.Data, CacheParams))
@@ -40,7 +43,7 @@ end
 [ TrainData, TestData , TrainLabels, TestLabels, ~, TestIndices] = ...
     TrainTestSplit(Data, Labels, Params.Split);
 
-%%
+%% prepare and train
 if CacheParams.UseCacheForTrainPrepare && ...
         exist(CacheParams.CacheForTrainPrepare, 'file')
     fprintf('Loading Cache for TrainPrepare ...\n');
@@ -59,7 +62,7 @@ else
     save(CacheParams.CacheForTrain, 'Model');
 end
 
-%%
+%% prepare and predict
 if CacheParams.UseCacheForTestPrepare && ...
         exist(CacheParams.CacheForTestPrepare, 'file')
     fprintf('Loading Cache for TestPrepare ...\n');
@@ -69,15 +72,20 @@ else
     save(CacheParams.CacheForTestPrepare, 'TestDataRep');
 end
 
-%TODO: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED
+%NOTE: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED
 %THIS IS DUE TO RANDOMNESS IN Kmeans PREDICT/fwd cpp code
+%One could seed the c stdlib rand inside SmoTutor::SmoTutor() ctor
+% to get consistent results
 Results = Test(Model, TestDataRep, Params.Test);
 
+%% Calc stats and report results
+
+%Compute the results statistics and return them as fields of Summary
 Summary = Evaluate(Results, TestLabels, Params.Summary);
 
 fprintf('The experiment took %.2f seconds.\n', toc(tTotal));
 
-%% 
+%Draws the results figures, reports results to the screen and persists 
 ReportResults(Summary, TestLabels, TestIndices, Metadata, Params);
 
 

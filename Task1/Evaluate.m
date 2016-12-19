@@ -6,6 +6,7 @@ function Summary = Evaluate(Results, Labels, Params)
 %       where M(i,j) is the probability that an example with true label i is predicted to be of label j
 
 %assert(isequal(size(Results.Predicted), size(Labels')));
+
 Y = Labels'; %NX1
 P = Results.Predicted;
 
@@ -15,7 +16,7 @@ Summary.ConfusionMatrix = ConfusionMatrix;
 errors = (ConfusionMatrix-diag(diag(ConfusionMatrix)));
 Summary.ErrorRate = sum(errors(:)) / length(Y);
 
-%used later in eval
+%used later in ReportResults()
 Summary.Results = Results;
 Summary.TestLabels = Labels;
 end

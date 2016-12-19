@@ -1,5 +1,12 @@
 function [Model] = Train(Data, Labels, Params)
-%TRAIN Trains the classifier
+%TRAIN Trains binary classifiers of SVM
+%   HOG:
+%       TODO: GIDON
+%   SIFT:
+%       Clustering training extracted SIFTS into K clusters, so later we
+%       could build histogram for each image that will act as features that
+%       will be fed into the SV 1-versus-all binary classifier
+
 if Params.Model == 'HOG'
     %Turn data to numeric vectors
     X = Data;
@@ -26,8 +33,6 @@ if Params.Model == 'HOG'
     end
     fprintf('\n');
 else
-    %   TODO: Detailed explanation goes here
-    
     K = Params.Kmeans.K;
     Model.K = K;
     

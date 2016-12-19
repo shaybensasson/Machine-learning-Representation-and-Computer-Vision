@@ -1,6 +1,19 @@
 function [Results] = Test(Model, Data, Params)
-%Test Tests the classified model
-%   Detailed explanation goes here
+%TEST Tests the classified model
+%   HOG:
+%       TODO: GIDON
+%   SIFT:
+%       We assign a trained centroids to each of the SIFTS extracted from 
+%       the test images, so later we build histogram for each image 
+%       that will act as features that the already trained binary
+%       classifiers could predict on
+%
+%   returns Results:
+%      .Predicted: The index of the maximum (most confident) binary 
+%               classifier for each test observation
+%      .ClassScoreMatrix: All the scores for of all binary classifiers for
+%               each test observation
+
 if Params.Model == 'HOG'
     % loop over all exampals
     fprintf('Testing model...\n');

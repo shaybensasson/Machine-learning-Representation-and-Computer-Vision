@@ -1,6 +1,6 @@
 function [Params] = GetDefaultParameters()
-
 %Returns a struct contain the default experiment parameters
+
 Params = struct();
 
 Params.Rseed = 2016;
@@ -43,9 +43,10 @@ end
 %OVERALL SIFTS SHOULD BE AT LEAST 100K
 %ScaleFeatures*length(Scales)*length(TrainingImages)
 
-% kernel types (1 -linear, 2 - polynomial(2), 3 - polynomial(3), 4 - rbf(0.5), 5 - rbf(2))
-Params.Train.SVM.C = 0.1; %1
-Params.Train.SVM.kernel = polynomial(2); %linear
+% common kernel types according to examples provided:
+%   (1 -linear, 2 - polynomial(2), 3 - polynomial(3), 4 - rbf(0.5), 5 - rbf(2))
+Params.Train.SVM.C = 0.1;
+Params.Train.SVM.kernel = polynomial(2); 
 Params.Train.SVM.tutor = smosvctutor; %param required for SVM
     
 if Params.Prepare.IsHOG
@@ -65,9 +66,7 @@ Params.Summary = struct();
 
 Params.Report.ROOT_DIR = 'Results/';
 
-
+%When we are hyper param optimizing we won't like heavy trace or ui reports
 Params.IsHyperParamOptimization = false;
-
-
 
 end

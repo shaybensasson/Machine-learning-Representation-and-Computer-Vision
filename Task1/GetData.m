@@ -9,11 +9,6 @@ Categories = GetAllCategories(Params.ROOT_DIR);
 Categories = Categories(Params.ClassIndices);
 Metadata.Categories = Categories;
 
-%cats = {dirs(idxs).name};
-%showHist(ROOT_DIR, cats_train, 'cats_train')
-%showHist(ROOT_DIR, cats_valid, 'cats_valid')
-%showHist(ROOT_DIR, cats_test, 'cats_test')
-
 % O(n_total) - we go over the cats subdirs twice
 % first time for prealloc
 % second time for image extraction
@@ -47,18 +42,19 @@ for i=1:n_cats
         filename = fullfile(Params.ROOT_DIR, cat, files(i_file).name);
         [img] = imread(filename);
         if (length(size(img)) == 3)
-            img = rgb2gray(img);
+            img = rgb2gray(img); %grayscale
         end
         
         %imshow(img);
         
-        resized = imresize(img, [Params.S Params.S]);
+        resized = imresize(img, [Params.S Params.S]); %resize to SxS pixels
+        
         %imshow(resized);
         
         TrialNum = TrialNum+1;
         Data(:,:,TrialNum) = resized;
         
-        %Note that our labels are 1:M, later we'll convert them to class indices
+        %Note that our labels are 1:M, later we'll convert them to actual class indices
         Labels(TrialNum) = i;
         
         Metadata.Filenames{TrialNum} = filename;
@@ -66,6 +62,7 @@ for i=1:n_cats
 end
   
     function [fis] = GetFiles(d)
+        %Returns files infromations under the dir ROOT_DIR/d
         fis = dir(fullfile(Params.ROOT_DIR, d));
         
         fis = fis(~[fis.isdir]);        
