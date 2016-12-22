@@ -1,7 +1,8 @@
 function [Results] = Test(Model, Data, Params)
 %TEST Tests the classified model
 %   HOG:
-%       TODO: GIDON
+%       for each of the sampals we predict the class using one-vs-all
+%       binary classifier using the HOG representation of the image% 
 %   SIFT:
 %       We assign a trained centroids to each of the SIFTS extracted from 
 %       the test images, so later we build histogram for each image 
