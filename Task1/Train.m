@@ -1,7 +1,9 @@
 function [Model] = Train(Data, Labels, Params)
 %TRAIN Trains binary classifiers of SVM
 %   HOG:
-%       TODO: GIDON
+%       TODO: train binary classifier on the HOG representation in
+%       one-versus-all method for each catagory, the function returns the
+%       trained model
 %   SIFT:
 %       Clustering training extracted SIFTS into K clusters, so later we
 %       could build histogram for each image that will act as features that
