@@ -1,7 +1,7 @@
 function [Model] = Train(Data, Labels, Params)
 %TRAIN Trains binary classifiers of SVM
 %   HOG:
-%       TODO: train binary classifier on the HOG representation in
+%       train binary classifier on the HOG representation in
 %       one-versus-all method for each catagory, the function returns the
 %       trained model
 %   SIFT:
