@@ -1,3 +1,7 @@
+load('Results\S=100\S=100.workspace.mat');
+%load('Results\S=200\S=200.workspace.mat');
+
+
 N_TRIALS = length(fitresult);
 TrialNum = transpose(1:N_TRIALS);
 T = table(TrialNum, K_, C_, Kernel_,fitresult);
@@ -21,7 +25,7 @@ for k=1:length(Kernel)
     hold on
 end
 
-xlabel('Trial#');
+set(gca,'XTickLabel',{' '})
 ylabel('Validation Error Rate');
 xlim([0, N_TRIALS+1]);
 ylim([0, max(fitresult)*1.05]);

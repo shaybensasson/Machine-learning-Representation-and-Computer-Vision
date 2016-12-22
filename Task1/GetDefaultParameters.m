@@ -28,7 +28,7 @@ Params.Split.Ratio = 0.20; %test or valdation set proportion
 %see http://vision.cse.psu.edu/seminars/talks/2009/random_tff/bosch07a.pdf
 
 Params.Prepare.IsHOG = true; % model is SIFT or HOG
-%NOTE: CACHE DIR MUST BE PURGED WHEN CHANGING BETWEEN SIFT AND HOG
+%IMPORTANT: CACHE DIR MUST BE PURGED WHEN CHANGING BETWEEN SIFT AND HOG
 
 if Params.Prepare.IsHOG
     Params.Prepare.HOG.CellSize = 8;
