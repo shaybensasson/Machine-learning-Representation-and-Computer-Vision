@@ -13,22 +13,22 @@ else
 end
 Params.Data.S = 100; %200; Dimension of images after preproc
 if isunix
-    Params.Cache.CachePath = '.\Cache';
+    Params.Cache.CachePath = '.\Cache\';
 else
-    Params.Cache.CachePath = '..\Cache';
+    Params.Cache.CachePath = '..\Cache\';
 end
     
 Params.Cache.UseCacheForGetData = true;
-Params.Cache.CacheForGetData = sprintf('%s\GetData.mat', Params.Cache.CachePath);
+Params.Cache.CacheForGetData = sprintf('%sGetData.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTrainPrepare = true;
-Params.Cache.CacheForTrainPrepare = sprintf('%s\TrainPrepare.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTrainPrepare = sprintf('%sTrainPrepare.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTrain = true;
-Params.Cache.CacheForTrain = sprintf('%s\Train.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTrain = sprintf('%sTrain.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTestPrepare = true;
-Params.Cache.CacheForTestPrepare = sprintf('%s\TestPrepare.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTestPrepare = sprintf('%sTestPrepare.mat', Params.Cache.CachePath);
 
 
 Params.Split.Ratio = 0.20; %test or valdation set proportion
