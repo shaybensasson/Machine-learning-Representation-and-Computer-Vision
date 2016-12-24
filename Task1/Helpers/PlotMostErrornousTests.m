@@ -56,9 +56,9 @@ for idx=1:length(ClassIndices)
         title(sprintf('Most Errornous Test Images: True[%s], Predicted[%s], Lowest Margin: [%f]', ...
             Metadata.Categories{row.True}, Metadata.Categories{row.Predicted}, row.Error), ...
             'Interpreter', 'None', 'FontSize', 10);
-        %pause(5);
-        fprintf('Press any key to continue ...\n');
-        pause();
+        
+        fprintf('Press any key to continue (or let 10 seconds pass) ...\n');
+        pause(10);
     end
     
 end

@@ -22,7 +22,7 @@ if Params.IsHOG
         
         % Vectorize
          if IndImg == 1
-            DataRep = zeros(size(Data,3), length(TempHog(:)))
+            DataRep = zeros(size(Data,3), length(TempHog(:)));
         end
         DataRep(IndImg,:) = double(TempHog(:));
     end

@@ -6,29 +6,25 @@ Params = struct();
 Params.Rseed = 2016;
 rng(Params.Rseed);
 
-if isunix
-    Params.Data.ROOT_DIR = '.\101_ObjectCategories\';
-else
-    Params.Data.ROOT_DIR = '..\101_ObjectCategories\';
-end
+Params.Data.ROOT_DIR = './101_ObjectCategories/';
+%Params.Data.ROOT_DIR = '../101_ObjectCategories/'; %Gidon - matlab 2014
+
 Params.Data.S = 100; %200; Dimension of images after preproc
-if isunix
-    Params.Cache.CachePath = '.\Cache\';
-else
-    Params.Cache.CachePath = '..\Cache\';
-end
-    
+
+Params.Cache.CachePath = './Cache/';
+%Params.Cache.CachePath = '../Cache/'; %Gidon - matlab 2014
+
 Params.Cache.UseCacheForGetData = true;
-Params.Cache.CacheForGetData = sprintf('%sGetData.mat', Params.Cache.CachePath);
+Params.Cache.CacheForGetData = sprintf('%s/GetData.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTrainPrepare = true;
-Params.Cache.CacheForTrainPrepare = sprintf('%sTrainPrepare.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTrainPrepare = sprintf('%s/TrainPrepare.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTrain = true;
-Params.Cache.CacheForTrain = sprintf('%sTrain.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTrain = sprintf('%s/Train.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTestPrepare = true;
-Params.Cache.CacheForTestPrepare = sprintf('%sTestPrepare.mat', Params.Cache.CachePath);
+Params.Cache.CacheForTestPrepare = sprintf('%s/TestPrepare.mat', Params.Cache.CachePath);
 
 
 Params.Split.Ratio = 0.20; %test or valdation set proportion
@@ -72,7 +68,7 @@ end
 
 Params.Summary = struct();
 
-Params.Report.ROOT_DIR = 'Results\';
+Params.Report.ROOT_DIR = 'Results/';
 
 %When we are hyper param optimizing we won't like heavy trace or ui reports
 Params.IsHyperParamOptimization = false;
