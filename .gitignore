@@ -1,5 +1,6 @@
 .dropbox
 .idea/
+ToSubmit/
 Lectures/
 .ipynb_checkpoints/
 *.gz
