@@ -10,7 +10,7 @@ if Params.IsHOG
     Params = Params.HOG;
     
     % loop over all exampals
-    fprintf('Preprocessing data (covert to HOG, Vectorize)...\n');
+    fprintf('Preprocessing data (convert to HOG, Vectorize) ...\n');
     
     for IndImg = 1:size(Data,3)
         % turn into HOG represntation
@@ -27,6 +27,7 @@ if Params.IsHOG
         DataRep(IndImg,:) = double(TempHog(:));
     end
 else
+    fprintf('Preprocessing data (extracting SIFTS) ...\n');
     Params = Params.SIFT;
     
     stride = Params.Stride;

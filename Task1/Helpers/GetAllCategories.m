@@ -4,6 +4,13 @@ function [cats] = GetAllCategories(ROOT_DIR)
         ROOT_DIR = './101_ObjectCategories/';
     end
     dirs = dir(ROOT_DIR);
+    
+    if (isempty(dirs))
+        error( ...
+            'Could not locate Caltec101 dir at ROOT_DIR parameter: "%s".', ...
+            ROOT_DIR);
+    end
+    
     dirs = dirs(3:end); %discard . and ..
     dirFlags = [dirs.isdir]; % check if dir
     dirs = dirs(dirFlags);

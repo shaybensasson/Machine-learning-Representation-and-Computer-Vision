@@ -23,6 +23,9 @@ Params.Data.ClassIndices = ClassIndices;
 Params.Experiment = 'Exp_00';
 
 CacheParams = Params.Cache;
+if (~CacheParams.UseCache)
+    fprintf('NOTICE: UseCache IS DISABLED.\n');
+end
 
 %create cache dir if missing
 if (~exist(CacheParams.CachePath, 'dir'))

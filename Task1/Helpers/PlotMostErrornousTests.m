@@ -57,8 +57,8 @@ for idx=1:length(ClassIndices)
             Metadata.Categories{row.True}, Metadata.Categories{row.Predicted}, row.Error), ...
             'Interpreter', 'None', 'FontSize', 10);
         
-        fprintf('Press any key to continue (or let 10 seconds pass) ...\n');
-        pause(10);
+        fprintf('Press any key to continue ...\n');
+        pause();
     end
     
 end

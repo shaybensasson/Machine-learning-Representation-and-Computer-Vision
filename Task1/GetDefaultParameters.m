@@ -14,16 +14,18 @@ Params.Data.S = 100; %200; Dimension of images after preproc
 Params.Cache.CachePath = './Cache/';
 %Params.Cache.CachePath = '../Cache/'; %Gidon - matlab 2014
 
-Params.Cache.UseCacheForGetData = true;
+Params.Cache.UseCache = false; %Use persistent mat files or not
+
+Params.Cache.UseCacheForGetData = Params.Cache.UseCache && true;
 Params.Cache.CacheForGetData = sprintf('%s/GetData.mat', Params.Cache.CachePath);
 
-Params.Cache.UseCacheForTrainPrepare = true;
+Params.Cache.UseCacheForTrainPrepare = Params.Cache.UseCache && true;
 Params.Cache.CacheForTrainPrepare = sprintf('%s/TrainPrepare.mat', Params.Cache.CachePath);
 
-Params.Cache.UseCacheForTrain = true;
+Params.Cache.UseCacheForTrain = Params.Cache.UseCache && true;
 Params.Cache.CacheForTrain = sprintf('%s/Train.mat', Params.Cache.CachePath);
 
-Params.Cache.UseCacheForTestPrepare = true;
+Params.Cache.UseCacheForTestPrepare = Params.Cache.UseCache && true;
 Params.Cache.CacheForTestPrepare = sprintf('%s/TestPrepare.mat', Params.Cache.CachePath);
 
 
