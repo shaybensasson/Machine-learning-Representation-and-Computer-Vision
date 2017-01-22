@@ -10,6 +10,11 @@ Cache/
 Results/
 svm_v0.56/
 vlfeat-0.9.20/
+matconvnet-1.0-beta17/
+FlowerData/
+PeppersData/
+ImageData/
+
 
 *.docx
 *.pptx
