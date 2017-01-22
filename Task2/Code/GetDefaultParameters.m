@@ -38,17 +38,10 @@ Params.Prepare.NetName = 'imagenet-caffe-alex.mat';
 Params.Prepare.UnusedLayers = 21:22;
 
 % Data augmentation parameters
-<<<<<<< HEAD
 Params.Prepare.AugFact = 5;
 Params.Prepare.DataAugment.Rot = 5;
 Params.Prepare.DataAugment.Shif= 10;
 Params.Prepare.DataAugment.Nois= 0.001;
-=======
-Params.Prepare.AugFact = 4;
-Params.Prepare.DataAugment.Rot = 10;
-Params.Prepare.DataAugment.Shif= 15;
-Params.Prepare.DataAugment.Nois= 0.01;
->>>>>>> origin/master
 Params.Prepare.DataAugment.Flip= 1;
 
 %TODO: Params.Prepare = 
