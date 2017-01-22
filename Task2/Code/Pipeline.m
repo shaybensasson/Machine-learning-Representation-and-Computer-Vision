@@ -45,7 +45,8 @@ if CacheParams.UseCacheForTrainPrepare && ...
     fprintf('Loading Cache for TrainPrepare ...\n');
     load(CacheParams.CacheForTrainPrepare);
 else
-    [TrainDataRep] = Prepare(TrainData, Params.Prepare);
+    IsTrain = true;
+    [TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare);
     save(CacheParams.CacheForTrainPrepare, 'TrainDataRep');
 end
 
@@ -64,7 +65,8 @@ if CacheParams.UseCacheForTestPrepare && ...
     fprintf('Loading Cache for TestPrepare ...\n');
     load(CacheParams.CacheForTestPrepare);
 else
-    [TestDataRep] = Prepare(TestData, Params.Prepare);
+    IsTrain = false;
+    [TestDataRep, TestLabels] = Prepare(TestData, IsTrain, TestLabels, Params.Prepare);
     save(CacheParams.CacheForTestPrepare, 'TestDataRep');
 end
 

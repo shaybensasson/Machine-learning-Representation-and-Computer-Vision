@@ -1,7 +1,9 @@
-function ReportResults(Summary, TestLabels, TestIndices, Metadata, Params)
+function ReportResults(Summary, TestLabels, Metadata, Params)
 %REPORTRESULTS Draws the results figures, reports results to the screen and persists
 %   Draws the results figures, reports results to the screen
 %   Saves the results to the results path, to a file named according to the experiment name or number
+
+%TODO:  improve comments
 
 %Note that when hyper parameter optimizing - TestIndices is empty
 % Because it causes problems when reshuffling the train/test split for val
@@ -14,7 +16,7 @@ if (~Params.IsHyperParamOptimization)
     
     hf = figure;
     MaximizeFigure(hf);
-    PlotConfusionMatrix(Summary.ConfusionMatrix, Metadata.Categories);
+    PlotConfusionMatrix(Summary.ConfusionMatrix);
 end
 
 %{

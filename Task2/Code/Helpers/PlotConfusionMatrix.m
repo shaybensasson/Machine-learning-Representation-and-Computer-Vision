@@ -9,8 +9,15 @@ function PlotConfusionMatrix(conf_mat,classes_names)
 %Cmat: confusion matrix values
 
 if (nargin == 0) %DEMO
-    conf_mat = eye(5);
-    classes_names = {'class1','class2','class3','class5','class5'};
+    conf_mat = eye(2);
+end
+
+if (nargin <= 1)
+    if isequal(size(conf_mat), [2 2]) %binary classification
+        classes_names = {'CLASS','NOT CLASS'};
+    end
+    
+    %otherwise, default error
 end
 
 conf_mat_prop = zeros(size(conf_mat));

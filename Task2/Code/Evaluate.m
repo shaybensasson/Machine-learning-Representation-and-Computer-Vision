@@ -8,13 +8,20 @@ function Summary = Evaluate(Results, Labels, Params)
 %assert(isequal(size(Results.Predicted), size(Labels')));
 
 Y = Labels'; %NX1
-P = Results.Predicted;
+P = Results.Probs;
 
-ConfusionMatrix = confusionmat(Y,P);
+
+P = 2*round(P)-1; %convert to 1s and zeros
+ConfusionMatrix = confusionmat(int16(Y),int16(P));
+
 Summary.ConfusionMatrix = ConfusionMatrix;
 
 errors = (ConfusionMatrix-diag(diag(ConfusionMatrix)));
 Summary.ErrorRate = sum(errors(:)) / length(Y);
+
+%TODO: should be in reportresults
+fprintf('ErrorRate: %f\n', Summary.ErrorRate);
+
 
 %used later in ReportResults()
 Summary.Results = Results;

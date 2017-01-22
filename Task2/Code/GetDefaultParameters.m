@@ -19,13 +19,13 @@ Params.Cache.UseCache = true; %Use persistent mat files or not
 Params.Cache.UseCacheForGetData = Params.Cache.UseCache && true;
 Params.Cache.CacheForGetData = sprintf('%s/GetData.mat', Params.Cache.CachePath);
 
-Params.Cache.UseCacheForTrainPrepare = Params.Cache.UseCache && true;
+Params.Cache.UseCacheForTrainPrepare = Params.Cache.UseCache && false;
 Params.Cache.CacheForTrainPrepare = sprintf('%s/TrainPrepare.mat', Params.Cache.CachePath);
 
 Params.Cache.UseCacheForTrain = Params.Cache.UseCache && false;
 Params.Cache.CacheForTrain = sprintf('%s/Train.mat', Params.Cache.CachePath);
 
-Params.Cache.UseCacheForTestPrepare = Params.Cache.UseCache && true;
+Params.Cache.UseCacheForTestPrepare = Params.Cache.UseCache && false;
 Params.Cache.CacheForTestPrepare = sprintf('%s/TestPrepare.mat', Params.Cache.CachePath);
 
 
@@ -34,8 +34,16 @@ Params.Split.Ratio = 0.25; %test or valdation set proportion
 %see http://vision.cse.psu.edu/seminars/talks/2009/random_tff/bosch07a.pdf
 
 %%
-Params.Prepare.NetName = 'imagenet-caffe-alex.mat'
-Params.Prepare.UnusedLayers = 21:22
+Params.Prepare.NetName = 'imagenet-caffe-alex.mat';
+Params.Prepare.UnusedLayers = 21:22;
+
+% Data augmentation parameters
+Params.Prepare.AugFact = 5;
+Params.Prepare.DataAugment.Rot = 5;
+Params.Prepare.DataAugment.Shif= 10;
+Params.Prepare.DataAugment.Nois= 0.001;
+Params.Prepare.DataAugment.Flip= 1;
+
 %TODO: Params.Prepare = 
 %TODO: Params.Prepare
 
@@ -52,11 +60,6 @@ else
     Params.Prepare.SIFT.Stride = 1; %in pixels
     Params.Prepare.SIFT.ScaleFeatures = 25; %how many features to sample from each scale?
 end
-
-Params.Prepare.DataAugment.Rot = 10;
-Params.Prepare.DataAugment.Shif= 15;
-Params.PrepareDataAugment.Nois= 0.01;
-Params.DataAugment.Flip= 1;
 
 %OVERALL SIFTS SHOULD BE AT LEAST 100K
 %ScaleFeatures*length(Scales)*length(TrainingImages)

@@ -17,11 +17,13 @@ TrialNum = 0;
 Data = zeros(Params.S(1), Params.S(2), Params.S(3), n_total, 'single');
 
 fprintf('Reading [#%d] image files ...\n', n_total);
-
 for i=1:n_total 
-        
+
     % resize image
     resized = imresize(single(cell2mat(Images(i))), [Params.S(1) Params.S(2)]); %resize to SxS pixels
+
+
+
     % standartize image
     for j = 1:Params.S(3)
         CMean = mean2(resized(:,:,j));
@@ -30,9 +32,7 @@ for i=1:n_total
     end
     %imshow(resized);
     % get inside DATA    
-
     Data(:,:,:,i) = resized;
 end
-
 
 end
