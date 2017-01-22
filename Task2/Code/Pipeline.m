@@ -49,7 +49,9 @@ else
     [TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare);
     save(CacheParams.CacheForTrainPrepare, 'TrainDataRep');
 end
+clearvars TrainData 
 
+%%
 if CacheParams.UseCacheForTrain && ...
         exist(CacheParams.CacheForTrain, 'file')
     fprintf('Loading Cache for Train ...\n');
