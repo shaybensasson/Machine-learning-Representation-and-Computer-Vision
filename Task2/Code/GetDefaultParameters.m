@@ -34,8 +34,16 @@ Params.Split.Ratio = 0.25; %test or valdation set proportion
 %see http://vision.cse.psu.edu/seminars/talks/2009/random_tff/bosch07a.pdf
 
 %%
-Params.Prepare.NetName = 'imagenet-caffe-alex.mat'
-Params.Prepare.UnusedLayers = 21:22
+Params.Prepare.NetName = 'imagenet-caffe-alex.mat';
+Params.Prepare.UnusedLayers = 21:22;
+
+% Data augmentation parameters
+Params.Prepare.AugFact = 4;
+Params.Prepare.DataAugment.Rot = 10;
+Params.Prepare.DataAugment.Shif= 15;
+Params.Prepare.DataAugment.Nois= 0.01;
+Params.Prepare.DataAugment.Flip= 1;
+
 %TODO: Params.Prepare = 
 %TODO: Params.Prepare
 
