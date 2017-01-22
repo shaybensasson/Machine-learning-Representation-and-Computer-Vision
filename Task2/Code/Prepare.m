@@ -4,17 +4,22 @@ function [DataRep, Labels] = Prepare(Data, IsTrain, Labels, Params)
 %TODO: put parameters in Params
 
 % loop over all exampals
-fprintf('Preprocessing data (get activation of alexnet last layer) ...\n');
-net = load('imagenet-caffe-alex.mat') ;
-net.layers(20:21) = [];
+
+net = load(Params.NetName) ;
+net.layers(Params.UnusedLayers) = [];
 
 if (IsTrain)
     augFact = Params.AugFact;
 else
     augFact = 1;
 end
-
-DataRep = single(zeros(size(Data,4) * augFact, net.layers{1,18}.size(3)));
+if Params.ExtraLayer
+    DataRep = single(zeros(size(Data,4) * augFact, net.layers{1,18}.size(3)*2));
+    fprintf('Preprocessing data (get activation of alexnet two last layer) ...\n');
+else
+    DataRep = single(zeros(size(Data,4) * augFact, net.layers{1,18}.size(3)));
+    fprintf('Preprocessing data (get activation of alexnet last layer) ...\n');
+end
 
 for i = 1:augFact
     
@@ -31,7 +36,12 @@ for i = 1:augFact
         % res(i+1).x: the output of layer i. Hence res(1).x is the network input.
         
         %we are taking the fc activations (next is the 'relu' non linearity)
-        DataRep(IndImg + (i -1)*size(Data,4), :) = squeeze(res(19).x);
+        
+        if Params.ExtraLayer
+            DataRep(IndImg + (i -1)*size(Data,4), :) = [squeeze(res(18).x); squeeze(res(20).x) ];
+        else
+            DataRep(IndImg + (i -1)*size(Data,4), :) = squeeze(res(18).x);
+        end
    end
 end
 

@@ -10,9 +10,29 @@ function Summary = Evaluate(Results, Labels, Params)
 Y = Labels'; %NX1
 P = Results.Probs;
 
+% calculate AUC curve
+[~,Recall,thresh,AUC] = perfcurve(Y == 1,P,true )
+target = Y == 1;
+Prec = zeros(length(thresh),1);
+for i = 1:length(thresh)
+    idx     = (P >= thresh(i));
+    Prec(i) = sum(target(idx)) / sum(idx);
+end
 
-P = 2*round(P)-1; %convert to 1s and zeros
-ConfusionMatrix = confusionmat(int16(Y),int16(P));
+%plot AUC curve
+plot(Recall,Prec)
+
+xlabel('Recall rate')
+ylabel('precision rate')
+title(strcat('Precision/recall curve for Pepper Classification by SVM, AUC= ', num2str(AUC)) )
+
+
+
+%recall on the x-axis, precision on the y-axis
+
+
+ClasBol = 2*round(P)-1; %convert to 1s and zeros
+ConfusionMatrix = confusionmat(int16(Y),int16(ClasBol));
 
 Summary.ConfusionMatrix = ConfusionMatrix;
 

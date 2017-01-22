@@ -22,8 +22,8 @@ function [Results] = Test(Model, Data, Params)
     %[~,Predicted] = max(ClassScoreMatrix'); %#ok<UDIM>
     
     scores(:,2) = -scores(:,1);
-    softmax = @(X) exp(X)./sum(exp(X),2);
-    probs = softmax(scores);
+    %softmax = @(X) exp(X)/sum(exp(X),2);
+    probs = softmax(scores')';
     probs = probs(:,1); %we care only about the probability of being class 1
 
     Results.Probs = probs;

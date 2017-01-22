@@ -35,10 +35,11 @@ Params.Split.Ratio = 0.25; %test or valdation set proportion
 
 %%
 Params.Prepare.NetName = 'imagenet-caffe-alex.mat';
-Params.Prepare.UnusedLayers = 21:22;
+Params.Prepare.UnusedLayers = 20:21;
+Params.Prepare.ExtraLayer = true;
 
 % Data augmentation parameters
-Params.Prepare.AugFact = 5;
+Params.Prepare.AugFact = 1;
 Params.Prepare.DataAugment.Rot = 5;
 Params.Prepare.DataAugment.Shif= 10;
 Params.Prepare.DataAugment.Nois= 0.001;
