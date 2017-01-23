@@ -13,6 +13,7 @@ P = Results.Probs;
 
 % calculate AUC curve
 [~,Recall,thresh,AUC] = perfcurve(Y == 1,P,true );
+
 target = Y == 1;
 Prec = zeros(length(thresh),1);
 for i = 1:length(thresh)
@@ -20,23 +21,20 @@ for i = 1:length(thresh)
     Prec(i) = sum(target(idx)) / sum(idx);
 end
 
-%plot AUC curve
+%% plot AUC curve
 plot(Recall,Prec)
 
 xlabel('Recall rate')
 ylabel('precision rate')
 title(strcat('Precision/recall curve for Pepper Classification by SVM, AUC= ', num2str(AUC)) )
 
-
+%% Calc other stats
 ConfusionMatrix = confusionmat(int16(Y),int16(Results.Predictions));
 
 Summary.ConfusionMatrix = ConfusionMatrix;
 
 errors = (ConfusionMatrix-diag(diag(ConfusionMatrix)));
 Summary.ErrorRate = sum(errors(:)) / length(Y);
-
-%TODO: should be in reportresults
-fprintf('ErrorRate: %f\n', Summary.ErrorRate);
 
 
 %used later in ReportResults()

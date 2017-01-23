@@ -1,7 +1,7 @@
 function [DataRep, Labels] = Prepare(Data, IsTrain, Labels, Params)
 %PREPARE Forward pass thru nnet and store activations/representations
 
-%TODO: put parameters in Params
+%TODO: Comment heavily
 
 % loop over all exampals
 net = load('imagenet-caffe-alex.mat') ;

@@ -20,8 +20,7 @@ function [Results] = Test(Model, Data, Params)
     %TODO: add comments
 
     scores(:,2) = -scores(:,1);
-    
-    
+        
     %probs = softmax(scores')';
     probs = softmax_with_dim(scores, 2);
     probs = probs(:,1); %we care only about the probability of being class 1
