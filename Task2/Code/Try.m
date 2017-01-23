@@ -1,7 +1,7 @@
 % Try out Alexnet
 
 
-%vl_testnn
+vl_testnn
 %%
 
 %http://www.cc.gatech.edu/~hays/compvision/proj6/

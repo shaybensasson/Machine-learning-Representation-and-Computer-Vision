@@ -18,13 +18,13 @@ TestLabels = TTS.ValLabels;
 
 %%
 IsTrain = true;
-[TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params)
+[TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare);
 
 Model = Train(TrainDataRep, TrainLabels, Params.Train);
 
 %%
 IsTrain = false;
-[TestDataRep, TestLabels] = Prepare(TestData, IsTrain, TestLabels, Params)
+[TestDataRep, TestLabels] = Prepare(TestData, IsTrain, TestLabels, Params.Prepare);
 
 Results = Test(Model, TestDataRep, Params.Test);
 

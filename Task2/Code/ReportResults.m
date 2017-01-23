@@ -10,22 +10,24 @@ function ReportResults(Summary, TestLabels, TestIndices, Metadata, Params)
 
 fprintf('ErrorRate: %f\n', Summary.ErrorRate);
 %fprintf('Confusion Matrix: %f', Summary.ConfusionMatrix);
+fprintf('AUC: %f\n', Summary.ROC.AUC);
 
 if (~Params.IsHyperParamOptimization)
     fprintf('Plotting Confusion Matrix ...\n');
-    
-    hf = figure;
+    %TODO: do we want this later?
+    figure;
     %MaximizeFigure(hf);
     PlotConfusionMatrix(Summary.ConfusionMatrix);
+    
+    
+    %% plot AUC curve
+    figure;
+    plot(Summary.ROC.Recall, Summary.ROC.Precision)
+    
+    xlabel('Recall rate')
+    ylabel('precision rate')
+    title(strcat('Precision/recall curve for Pepper Classification by SVM, AUC= ', num2str(Summary.ROC.AUC)));
 end
-
-%TODO: remove
-confmat = Summary.ConfusionMatrix;
-[micro, macro] = MicroMacroPR(confmat); %#ok
-fprintf('precision: %f\n', macro.precision)
-fprintf('recall: %f\n', macro.recall)
-fprintf('fscore: %f\n', macro.fscore)
-
 
 fprintf('Persisting Experiment Results ...\n');
 
@@ -42,6 +44,5 @@ if (~Params.IsHyperParamOptimization)
     %Error visualization
     PlotMostErrornousTests(Summary.Results, TestLabels, TestIndices, ...
         Metadata)
-end
 end
 

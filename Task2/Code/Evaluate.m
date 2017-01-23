@@ -5,28 +5,24 @@ function Summary = Evaluate(Results, Labels, Params)
 %       Secondary: the confusion matrix: a matrix of size MªM (M – the number of classes),
 %       where M(i,j) is the probability that an example with true label i is predicted to be of label j
 
-%TODO: remove
-assert(isequal(size(Results.Predictions), size(Labels')));
+%assert(isequal(size(Results.Predictions), size(Labels')));
 
 Y = Labels'; %NX1
 P = Results.Probs;
 
-% calculate AUC curve
-[~,Recall,thresh,AUC] = perfcurve(Y == 1,P,true );
+%% calculate AUC curve
+[~,Recall,Thresh,AUC] = perfcurve(Y == 1,P, true);
 
 target = Y == 1;
-Prec = zeros(length(thresh),1);
-for i = 1:length(thresh)
-    idx     = (P >= thresh(i));
-    Prec(i) = sum(target(idx)) / sum(idx);
+Precision = zeros(length(Thresh),1);
+for i = 1:length(Thresh)
+    idx     = (P >= Thresh(i));
+    Precision(i) = sum(target(idx)) / sum(idx);
 end
 
-%% plot AUC curve
-plot(Recall,Prec)
-
-xlabel('Recall rate')
-ylabel('precision rate')
-title(strcat('Precision/recall curve for Pepper Classification by SVM, AUC= ', num2str(AUC)) )
+Summary.ROC.Recall = Recall;
+Summary.ROC.Precision = Precision;
+Summary.ROC.AUC = AUC;
 
 %% Calc other stats
 ConfusionMatrix = confusionmat(int16(Y),int16(Results.Predictions));

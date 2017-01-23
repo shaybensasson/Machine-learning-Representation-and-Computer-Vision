@@ -5,7 +5,6 @@ addpath('Helpers');
 addpath('AngliaSVM');
 run ../matconvnet-1.0-beta17/matlab/vl_setupnn
 
-
 %% Prepare Cross experiment Parameters
 Params = GetDefaultParameters();
 
@@ -52,15 +51,15 @@ TTS = struct();
     TrainTestSplit( TrainData, TrainLabels, Params.Split);
 
 %% Gridseach hyper parameter space
-C = [0.1, 1, 5, 10]; %SVM tradeoff param
+%C = [0.1, 1, 5, 10]; %SVM tradeoff param
 
 %Test
-%C = [1]; %SVM tradeoff param
-%Kernel = [2];
+C = [0.1]; %SVM tradeoff param
+Kernel = [2, 3, 4, 5];
 
 Kernel_Type = {linear, polynomial(2), polynomial(3), rbf(0.5), rbf(2)};
 Kernel_Name = {'lin', 'poly(2)', 'poly(3)', 'rbf(0.5)', 'rbf(2)'};
-Kernel = 1:length(Kernel_Type);
+%Kernel = 1:length(Kernel_Type);
 
 [C_,Kernel_] = ndgrid(C, Kernel);
 

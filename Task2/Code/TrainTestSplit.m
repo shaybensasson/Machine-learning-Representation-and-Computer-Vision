@@ -9,7 +9,7 @@ Indices = 1:length(Labels);
 perm = randperm(length(Labels));
 
 Labels = Labels(perm);
-Data = Data(:,:, :,perm);
+Data = Data(:,:,:,perm);
 Indices = Indices(perm);
 
 
@@ -25,8 +25,6 @@ Labels2 = Labels(1, TrainOrTest == 2);
 
 Data1Indices = Indices(TrainOrTest == 1);
 Data2Indices = Indices(TrainOrTest == 2);
-
-%TODO: test this
 end
 
 

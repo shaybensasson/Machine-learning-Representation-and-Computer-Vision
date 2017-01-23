@@ -27,7 +27,7 @@ for i = 1:augFact
         Img = single(Data(:,:,:,IndImg));
         
         % Augment Data
-        if (IsTrain)
+        if (IsTrain && augFact > 1) %TODO: talk to gideon we might remove it
             Img = DataAugment(Img, Params.DataAugment);
         end
         
@@ -36,11 +36,14 @@ for i = 1:augFact
         
         %we are taking the fc activations (next is the 'relu' non linearity)
         
+        
         if Params.ExtraLayer
-            DataRep(IndImg + (i -1)*size(Data,4), :) = [squeeze(res(18).x); squeeze(res(20).x) ];
+            representation = [squeeze(res(18).x); squeeze(res(20).x) ];
         else
-            DataRep(IndImg + (i -1)*size(Data,4), :) = squeeze(res(18).x);
+            representation = squeeze(res(18).x);
         end
+        
+        DataRep(IndImg + (i -1)*size(Data,4), :) = representation;
    end
 end
 

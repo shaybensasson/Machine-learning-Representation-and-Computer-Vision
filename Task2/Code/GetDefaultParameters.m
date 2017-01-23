@@ -30,11 +30,11 @@ Params.Cache.CacheForTestPrepare = sprintf('%s/TestPrepare.mat', Params.Cache.Ca
 
 Params.Split.Ratio = 0.25; %test or valdation set proportion
 
-%%
+%% Prepare() Params
 Params.Prepare.ExtraLayer = true; %Determines whether to combines AlexNet two last FCs or use only the last one
 
 % Data augmentation parameters
-Params.Prepare.AugFact = 10;
+Params.Prepare.AugFact = 1;
 Params.Prepare.DataAugment.Rot = 5;
 Params.Prepare.DataAugment.Shif= 10;
 Params.Prepare.DataAugment.Nois= 0.001;
