@@ -1,4 +1,4 @@
-function ReportResults(Summary, TestLabels, Metadata, Params)
+function ReportResults(Summary, TestLabels, TestIndices, Metadata, Params)
 %REPORTRESULTS Draws the results figures, reports results to the screen and persists
 %   Draws the results figures, reports results to the screen
 %   Saves the results to the results path, to a file named according to the experiment name or number
@@ -15,17 +15,17 @@ if (~Params.IsHyperParamOptimization)
     fprintf('Plotting Confusion Matrix ...\n');
     
     hf = figure;
-    MaximizeFigure(hf);
+    %MaximizeFigure(hf);
     PlotConfusionMatrix(Summary.ConfusionMatrix);
 end
 
-%{
+%TODO: remove
 confmat = Summary.ConfusionMatrix;
 [micro, macro] = MicroMacroPR(confmat); %#ok
 fprintf('precision: %f\n', macro.precision)
 fprintf('recall: %f\n', macro.recall)
 fprintf('fscore: %f\n', macro.fscore)
-%}
+
 
 fprintf('Persisting Experiment Results ...\n');
 
@@ -41,7 +41,7 @@ save(file_path, ...
 if (~Params.IsHyperParamOptimization)
     %Error visualization
     PlotMostErrornousTests(Summary.Results, TestLabels, TestIndices, ...
-        Metadata, Params.Data.ClassIndices)
+        Metadata)
 end
 end
 

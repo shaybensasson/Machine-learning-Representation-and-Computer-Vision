@@ -6,14 +6,12 @@ addpath('AngliaSVM');
 run ../matconvnet-1.0-beta17/matlab/vl_setupnn
 
 
-%% Choose classes to learn from/test on
-
+%% Prepare Cross experiment Parameters
 Params = GetDefaultParameters();
 
-rng(Params.Rseed);     % Seed the random number generator
+rng(Params.Rseed); % Seed the random number generator
 
-%ClassIndices = GetRandomCatsPermutation(Params);
-%Can be used to test arbitrary set of classes
+Params.Experiment = 'Exp_00';
 
 CacheParams = Params.Cache;
 if (~CacheParams.UseCache)
@@ -30,13 +28,13 @@ tTotal = tic;
 
 if (IsGetDataCacheValid(Params.Data, CacheParams))
     fprintf('Loading Cache for GetData ...\n');
-    load(CacheParams.CacheForGetData, 'Data', 'Labels');
+    load(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata');
 else
-    [ Data, Labels] = GetData(Params.Data); 
-    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Params');
+    [ Data, Labels, Metadata ] = GetData(Params.Data); 
+    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata', 'Params');
 end
 
-[ TrainData, TestData , TrainLabels, TestLabels] = ...
+[ TrainData, TestData , TrainLabels, TestLabels, ~, TestIndices] = ...
     TrainTestSplit(Data, Labels, Params.Split);
 clearvars Data Labels 
 %% prepare and train

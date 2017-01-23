@@ -1,7 +1,6 @@
-function [Data1, Data2, Labels1, Labels2] = ...
+function [Data1, Data2, Labels1, Labels2, Data1Indices, Data2Indices] = ...
     TrainTestSplit(Data, Labels, Params)
 %TrainTestSplit Randomly Splits the data and labels according to a ratio defined in Params
-%We ensure that the data is splitted by labels, so Ratio will remain whithin label
 
 %Store original order
 Indices = 1:length(Labels);
@@ -24,6 +23,10 @@ Data2 = Data(:,:,:, TrainOrTest == 2);
 Labels1 = Labels(1,TrainOrTest == 1);
 Labels2 = Labels(1, TrainOrTest == 2);
 
+Data1Indices = Indices(TrainOrTest == 1);
+Data2Indices = Indices(TrainOrTest == 2);
+
+%TODO: test this
 end
 
 
