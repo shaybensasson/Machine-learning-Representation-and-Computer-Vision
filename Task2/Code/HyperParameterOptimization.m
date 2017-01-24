@@ -24,8 +24,6 @@ end
 %create cache dir if missing
 if (~exist(CacheParams.CachePath, 'dir'))
     mkdir(CacheParams.CachePath);
-else
-    PurgeCache(Params.Cache); %Purging cache when optimaizng
 end
 
     
@@ -51,15 +49,15 @@ TTS = struct();
     TrainTestSplit( TrainData, TrainLabels, Params.Split);
 
 %% Gridseach hyper parameter space
-%C = [0.1, 1, 5, 10]; %SVM tradeoff param
+C = [0.001, 0.01, 0.1, 1, 5]; %SVM tradeoff param
 
 %Test
-C = [0.1]; %SVM tradeoff param
-Kernel = [2, 3, 4, 5];
+%C = [0.1]; %SVM tradeoff param
+%Kernel = [2, 3, 4, 5];
 
-Kernel_Type = {linear, polynomial(2), polynomial(3), rbf(0.5), rbf(2)};
-Kernel_Name = {'lin', 'poly(2)', 'poly(3)', 'rbf(0.5)', 'rbf(2)'};
-%Kernel = 1:length(Kernel_Type);
+Kernel_Type = {linear, polynomial(2), rbf(0.001), rbf(0.01), rbf(0.1), rbf(0.5)};
+Kernel_Name = {'lin', 'poly(2)', 'rbf(0.001)', 'rbf(0.01)', 'rbf(0.1)', 'rbf(0.5)'};
+Kernel = 1:length(Kernel_Type);
 
 [C_,Kernel_] = ndgrid(C, Kernel);
 
@@ -80,7 +78,9 @@ fitresult = fitresult(:);
 
 N_TRIALS = length(fitresult);
 TrialNum = transpose(1:N_TRIALS);
-T = table(TrialNum, C_, Kernel_,fitresult);
+Kernel_Name_ = Kernel_Name(Kernel_(:))';
+
+T = table(TrialNum, C_, Kernel_, Kernel_Name_, fitresult);
 %T
 
 
@@ -113,4 +113,7 @@ for i=TrialNum'
     end
 end
 
+T = sortrows(T,{'fitresult'},{'ascend'})
+
 fprintf('-> HyperParam Optim completed. Duration: %f.\n', toc(tTotal));
+

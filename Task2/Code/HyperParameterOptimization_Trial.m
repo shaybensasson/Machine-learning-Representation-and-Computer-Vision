@@ -5,11 +5,19 @@ function [ErrorRate] = HyperParameterOptimization_Trial(TTS, Params, Metadata, .
 tic;
 Params.Experiment = sprintf('Exp_%d', Exp_Id);
 
-fprintf('-> Running experiment "%s" ...\n', Params.Experiment);
-
 Params.Train.SVM.C = C;
 Params.Train.SVM.Kernel = Kernel_Type{Kernel};
 Params.Train.SVM.KernelName = Kernel_Name{Kernel};
+
+fprintf('-> Running experiment "%s:C[%.3f],Ker[%s]" ...\n', ...
+    Params.Experiment, ...
+    Params.Train.SVM.C, Params.Train.SVM.KernelName);
+
+%{
+%TEST
+ErrorRate = rand;
+return;
+%}
 
 TrainData = TTS.TrainData;
 TrainLabels = TTS.TrainLabels;
