@@ -46,7 +46,7 @@ Params.Prepare.DataAugment.Flip= 1;
 % common kernel types according to examples provided:
 %   (1 -linear, 2 - polynomial(2), 3 - polynomial(3), 4 - rbf(0.5), 5 - rbf(2))
 Params.Train.SVM.C = 0.1;
-Params.Train.SVM.kernel = polynomial(2);
+Params.Train.SVM.kernel = linear;
 Params.Train.SVM.tutor = smosvctutor; %param required for SVM
 
 Params.Test = struct();

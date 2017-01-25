@@ -45,7 +45,7 @@ if CacheParams.UseCacheForTrainPrepare && ...
 else
     IsTrain = true;
     [TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare);
-    save(CacheParams.CacheForTrainPrepare, 'TrainDataRep');
+    save(CacheParams.CacheForTrainPrepare, 'TrainDataRep', 'TrainLabels');
 end
 clearvars TrainData 
 
@@ -67,7 +67,7 @@ if CacheParams.UseCacheForTestPrepare && ...
 else
     IsTrain = false;
     [TestDataRep, TestLabels] = Prepare(TestData, IsTrain, TestLabels, Params.Prepare);
-    save(CacheParams.CacheForTestPrepare, 'TestDataRep');
+    save(CacheParams.CacheForTestPrepare, 'TestDataRep', 'TestLabels');
 end
 
 %NOTE: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED

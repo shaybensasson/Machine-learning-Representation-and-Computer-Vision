@@ -10,8 +10,9 @@ net.layers(20:21) = [];
 if (IsTrain)
     augFact = Params.AugFact;
 else
-    augFact = 1;
+    augFact = 1; %No augmentation
 end
+
 if Params.ExtraLayer
     DataRep = single(zeros(size(Data,4) * augFact, net.layers{1,18}.size(3)*2));
     fprintf('Preprocessing data (get activation of alexnet two last layer) ...\n');

@@ -21,12 +21,12 @@ T = sortrows(T,{'Prob'},{'descend'});
 
 hf2 = figure;
 
-%% FP
+%% FP - Type 1 errors
 for idx=1:5
     row = T(idx, :); 
     image(Metadata.Images{row.FileNumber});
         
-    title(sprintf('Most Errornous FP Type-2: Index[%d], Score[%f], Pred[%d], True[%d]', ...
+    title(sprintf('Most Errornous FP Type-I: Index[%d], Score[%f], Pred[%d], True[%d]', ...
         idx, row.Score, row.Prediction, row.True), ...
         'Interpreter', 'None', 'FontSize', 10);
 
@@ -34,13 +34,13 @@ for idx=1:5
     pause();
 end
 
-
+%% FN - Type 2 errors
 n_totalrows = size(T,1);
 for idx=1:5
     row = T((n_totalrows+1)-idx, :); 
     image(Metadata.Images{row.FileNumber});
         
-    title(sprintf('Most Errornous FN Type-1: Index[%d], Score[%f], Pred[%d], True[%d]', ...
+    title(sprintf('Most Errornous FN Type-II: Index[%d], Score[%f], Pred[%d], True[%d]', ...
         idx, row.Score, row.Prediction, row.True), ...
         'Interpreter', 'None', 'FontSize', 10);
 
