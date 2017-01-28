@@ -3,8 +3,7 @@ clc; clear; close all;
 addpath('Helpers');
 %addpath('svm_v0.56');
 addpath('AngliaSVM');
-run ../matconvnet-1.0-beta17/matlab/vl_setupnn
-
+run matconvnet-1.0-beta17/matlab/vl_setupnn
 
 %% Prepare Cross experiment Parameters
 Params = GetDefaultParameters();
@@ -13,7 +12,7 @@ rng(Params.Rseed); % Seed the random number generator
 
 Params.Experiment = 'Exp_00';
 
-CacheParams = Params.Cache;
+CacheParams = Params.Cache; % cache usage parametrs
 if (~CacheParams.UseCache)
     fprintf('NOTICE: UseCache IS DISABLED.\n');
 end
@@ -26,54 +25,65 @@ end
 %% Get data and split it
 tTotal = tic;
 
+% check if cache exist, if so load previous cached data, else apply the
+% relevant function
 if (IsGetDataCacheValid(Params.Data, CacheParams))
     fprintf('Loading Cache for GetData ...\n');
     load(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata');
 else
-    [ Data, Labels, Metadata ] = GetData(Params.Data); 
-    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata', 'Params');
+    [ Data, Labels, Metadata ] = GetData(Params.Data);  % load data from file
+    save(CacheParams.CacheForGetData, 'Data', 'Labels', 'Metadata', 'Params'); 
 end
 
+% shuffle and split the data for train & test. 
 [ TrainData, TestData , TrainLabels, TestLabels, ~, TestIndices] = ...
     TrainTestSplit(Data, Labels, Params.Split);
-clearvars Data Labels 
-%% prepare and train
+clearvars Data Labels % delete unused variable, memory cleanup
+
+%% Prepare
+% check if cache exist, if so load previous cached data, else apply the
+% relevant function
 if CacheParams.UseCacheForTrainPrepare && ...
         exist(CacheParams.CacheForTrainPrepare, 'file')
     fprintf('Loading Cache for TrainPrepare ...\n');
     load(CacheParams.CacheForTrainPrepare);
 else
-    IsTrain = true;
-    [TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare);
+    IsTrain = true; % the train flag states if to use data augmentation (clasicly, augmentation is applied only to the training set)
+    % Run all train data in the network to get the network data representation after applying data augmentation.
+    [TrainDataRep, TrainLabels] = Prepare(TrainData, IsTrain, TrainLabels, Params.Prepare); 
     save(CacheParams.CacheForTrainPrepare, 'TrainDataRep', 'TrainLabels');
 end
-clearvars TrainData 
+clearvars TrainData % delete unused variable
 
-%%
+%% train
+
+% check if cache exist, if so load previous cached data, else apply the
+% relevant function
 if CacheParams.UseCacheForTrain && ...
         exist(CacheParams.CacheForTrain, 'file')
     fprintf('Loading Cache for Train ...\n');
     load(CacheParams.CacheForTrain);
 else
-    Model = Train(TrainDataRep, TrainLabels, Params.Train);
+    Model = Train(TrainDataRep, TrainLabels, Params.Train); % trian the svm model on the representation extracted from alexnet
     save(CacheParams.CacheForTrain, 'Model');
 end
 
-%% prepare and predict
+%% prepare test data and predict
+
+% check if cache exist, if so load previous cached data, else apply the
+% relevant function
 if CacheParams.UseCacheForTestPrepare && ...
         exist(CacheParams.CacheForTestPrepare, 'file')
     fprintf('Loading Cache for TestPrepare ...\n');
     load(CacheParams.CacheForTestPrepare);
 else
-    IsTrain = false;
-    [TestDataRep, TestLabels] = Prepare(TestData, IsTrain, TestLabels, Params.Prepare);
-    save(CacheParams.CacheForTestPrepare, 'TestDataRep', 'TestLabels');
+    IsTrain = false; % the train flag states if to use data augmentation (clasicly, augmentation is applied only to the training set)
+        % Run all train data in the network to get the network data representation without applying data augmentation.
+    [TestDataRep, ~] = Prepare(TestData, IsTrain, TestLabels, Params.Prepare);
+    save(CacheParams.CacheForTestPrepare, 'TestDataRep');
 end
 
-%NOTE: RESULTS.PREDICTED ARE VARYING BETWEEN ITERATIONS THOUGH WE USED SEED
-%THIS IS DUE TO RANDOMNESS IN Kmeans PREDICT/fwd cpp code
-%One could seed the c stdlib rand inside SmoTutor::SmoTutor() ctor
-% to get consistent results
+% apply the SVM trained on the test data
 Results = Test(Model, TestDataRep, Params.Test);
 
 %% Calc stats and report results

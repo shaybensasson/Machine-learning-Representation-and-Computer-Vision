@@ -11,13 +11,13 @@ Y = Labels'; %NX1
 P = Results.Probs;
 
 %% calculate AUC curve
-[~,Recall,Thresh,AUC] = perfcurve(Y == 1,P, true);
+[~,Recall,Thresh,AUC] = perfcurve(Y == 1,P, true); % matlab perfcurve function gives us recall in diffrent Thresholds
 
 target = Y == 1;
 Precision = zeros(length(Thresh),1);
 for i = 1:length(Thresh)
     idx     = (P >= Thresh(i));
-    Precision(i) = sum(target(idx)) / sum(idx);
+    Precision(i) = sum(target(idx)) / sum(idx); % calculate precesion in diffrent Thresholds
 end
 
 Summary.ROC.Recall = Recall;
@@ -25,12 +25,12 @@ Summary.ROC.Precision = Precision;
 Summary.ROC.AUC = AUC;
 
 %% Calc other stats
-ConfusionMatrix = confusionmat(int16(Y),int16(Results.Predictions));
+ConfusionMatrix = confusionmat(int16(Y),int16(Results.Predictions)); % calc confusion matrix
 
 Summary.ConfusionMatrix = ConfusionMatrix;
 
 errors = (ConfusionMatrix-diag(diag(ConfusionMatrix)));
-Summary.ErrorRate = sum(errors(:)) / length(Y);
+Summary.ErrorRate = sum(errors(:)) / length(Y); % calc error rate
 
 
 %used later in ReportResults()

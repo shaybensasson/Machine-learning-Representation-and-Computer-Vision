@@ -3,16 +3,18 @@ function [DataRep, Labels] = Prepare(Data, IsTrain, Labels, Params)
 
 %TODO: Comment heavily
 
-% loop over all exampals
-net = load('imagenet-caffe-alex.mat') ;
+% strip AlexNet last fc "softmax" classification layer
+net = load(Params.NetLocation) ;
 net.layers(20:21) = [];
 
+% Determine how many epochs of data augmentation to preform
 if (IsTrain)
     augFact = Params.AugFact;
 else
     augFact = 1; %No augmentation
 end
 
+% prealocate the data representation variable
 if Params.ExtraLayer
     DataRep = single(zeros(size(Data,4) * augFact, net.layers{1,18}.size(3)*2));
     fprintf('Preprocessing data (get activation of alexnet two last layer) ...\n');
@@ -38,7 +40,7 @@ for i = 1:augFact
         %we are taking the fc activations (next is the 'relu' non linearity)
         
         
-        if Params.ExtraLayer
+        if Params.ExtraLayer % get representation of one or two layers 
             representation = [squeeze(res(18).x); squeeze(res(20).x) ];
         else
             representation = squeeze(res(18).x);
